@@ -4,6 +4,10 @@ module.exports = (app) =>{
     })
     
     app.post('/tasks',(req,res)=>{
-        res.send('Rota POST de Tarefas ativada: Tarefa adicionada ao banco de dados!')
+        console.log(req.body)
+        res.json({
+            message:"Rota ativada com Post e recurso tarefas: valores de tarefas devem ser retornados",
+            body:req.body
+        })
     })
 }

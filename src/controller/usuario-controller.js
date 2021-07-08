@@ -3,6 +3,7 @@ module.exports = (app) =>{
         res.send('Rota ativada com GET e recurso usuarios: valores de usuarios devem ser retornados!')
     })
     app.post('/users',(req,res)=>{
+        console.log(req.body)
         res.send('Rota POST de usuario ativada: usuário adicionado ao banco de dados!')
     })
 }
