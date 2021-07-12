@@ -1,9 +1,21 @@
-module.exports = (app) =>{
+const User = require('../models/UserModel')
+
+module.exports = (app,db) =>{
+
     app.get('/users',(req,res)=>{
-        res.send('Rota ativada com GET e recurso usuarios: valores de usuarios devem ser retornados!')
+        res.json({
+            result:db.users,
+            count:db.users.length
+        })
     })
+
     app.post('/users',(req,res)=>{
-        console.log(req.body)
-        res.send('Rota POST de usuario ativada: usuário adicionado ao banco de dados!')
+        const {nome,email,senha} = req.body
+        let newUser =  new User(nome,email,senha)
+        db.users.push(newUser)
+        res.json({
+            message:'Usuario criado com sucesso',
+            error:false
+        })
     })
 }

@@ -8,13 +8,17 @@ const port = 3056
 const rotasUsuarios = require('./controller/usuario-controller')
 const rotasTarefas = require('./controller/tarefa-controller')
 
+//Import Models
+const User = require('./models/UserModel')
+const Task = require('./models/TaskModel')
+const db = require('./infra/bd')
+
 //Middlewares
 app.use(express.json())
 
 //Usando Rotas
-rotasUsuarios(app)
-rotasTarefas(app)
-
+rotasUsuarios(app,db)
+rotasTarefas(app,db)
 
 //Listen
 app.listen(port,()=>{

@@ -1,13 +1,19 @@
-module.exports = (app) =>{
+const Tasks = require('../models/TaskModel')
+module.exports = (app,db) =>{
     app.get('/tasks',(req,res)=>{
-        res.send('Rota ativada com GET e recurso tarefas: valores de tarefas devem ser retornados')
-    })
-    
-    app.post('/tasks',(req,res)=>{
-        console.log(req.body)
         res.json({
-            message:"Rota ativada com Post e recurso tarefas: valores de tarefas devem ser retornados",
-            body:req.body
+            result:db.tasks,
+            count:db.tasks.length
+        })
+    })
+
+    app.post('/tasks',(req,res)=>{
+        const {titulo,data,status,descicao} = req.body
+        let newTasks =  new Tasks(titulo,data,status,descicao)
+        db.tasks.push(newTasks)
+        res.json({
+            message:'Tareda criada com sucesso',
+            error:false
         })
     })
 }
