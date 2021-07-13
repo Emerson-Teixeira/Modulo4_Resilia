@@ -8,7 +8,7 @@ const port = 3056
 const rotasUsuarios = require('./controller/usuario-controller')
 const rotasTarefas = require('./controller/tarefa-controller')
 
-//Import Models
+//Import Models n DB
 const User = require('./models/UserModel')
 const Task = require('./models/TaskModel')
 const db = require('./infra/bd')

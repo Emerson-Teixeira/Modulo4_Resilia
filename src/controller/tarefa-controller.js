@@ -1,4 +1,5 @@
 const Tasks = require('../models/TaskModel')
+
 module.exports = (app,db) =>{
     app.get('/tasks',(req,res)=>{
         res.json({
@@ -8,11 +9,11 @@ module.exports = (app,db) =>{
     })
 
     app.post('/tasks',(req,res)=>{
-        const {titulo,data,status,descicao} = req.body
-        let newTasks =  new Tasks(titulo,data,status,descicao)
+        const {titulo,data,status,descricao} = req.body
+        let newTasks =  new Tasks(titulo,data,status,descricao)
         db.tasks.push(newTasks)
         res.json({
-            message:'Tareda criada com sucesso',
+            message:'Tarefa criada com sucesso',
             error:false
         })
     })
