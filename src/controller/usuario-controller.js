@@ -2,10 +2,20 @@ const User = require("../models/UserModel");
 
 module.exports = (app, db) => {
   app.get("/users", (req, res) => {
-    res.json({
-      result: db.users,
-      count: db.users.length,
-    });
+    db.all("Select * from USUARIOS", (err,rows) =>{
+      if(err){
+        res.json({
+          message:"Error ao obter usuarios",
+          error:true
+        })
+      }
+      else{
+        res.json({
+          result:rows,
+          count:rows.length
+        })
+      }
+    })
   });
 
   app.get("/users/:email", (req, res) => {
