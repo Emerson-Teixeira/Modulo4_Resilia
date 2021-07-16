@@ -11,7 +11,7 @@ const rotasTarefas = require('./controller/tarefa-controller')
 //Import Models n DB
 const User = require('./models/UserModel')
 const Task = require('./models/TaskModel')
-const db = require('./infra/bd')
+const db = require('./infra/sqlite-db')
 
 //Middlewares
 app.use(express.json())
