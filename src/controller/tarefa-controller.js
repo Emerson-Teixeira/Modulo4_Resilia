@@ -9,7 +9,7 @@ module.exports = (app,db) =>{
     })
 
     app.post('/tasks',(req,res)=>{
-        const {titulo,data,status,descricao} = req.body
+        const {titulo,data,status,descricao,userId} = req.body
         let newTasks =  new Tasks(titulo,data,status,descricao)
         db.tasks.push(newTasks)
         res.json({

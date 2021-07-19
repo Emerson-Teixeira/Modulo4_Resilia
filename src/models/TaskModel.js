@@ -1,12 +1,11 @@
-var idTask = 0;
 
 class Task{
-    constructor(titulo,descricao,status,dataCriacao){
-        this.id = idTask++;
+    constructor(titulo,descricao,status,userId){
         this.titulo = titulo;
         this.descricao = descricao;
         this.status = status;
-        this.dataCriacao = dataCriacao;
+        this.dataCriacao = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss').diff;
+        this.criador = userId
     }
 }
 
