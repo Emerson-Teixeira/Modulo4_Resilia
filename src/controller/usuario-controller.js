@@ -1,19 +1,20 @@
 const User = require("../models/UserModel");
-const UserDAO = require('../DAO/UserDAO');
+const UserDAO = require("../DAO/UserDAO");
 module.exports = (app, db) => {
-  let userBanco = new UserDAO(db)
+  let userBanco = new UserDAO(db);
 
   app.get("/users", (req, res) => {
-      userBanco.getAllUsers()
-      .then((rows) =>{
+    userBanco
+      .getAllUsers()
+      .then((rows) => {
         res.json({
-          result:rows,
-          count:rows.length
-        })
+          result: rows,
+          count: rows.length,
+        });
       })
-      .catch((err)=>{
-        res.json({err})
-      })
+      .catch((err) => {
+        res.json({ err });
+      });
   });
 
   app.get("/users/:email", (req, res) => {
@@ -28,21 +29,22 @@ module.exports = (app, db) => {
 
   app.post("/users", (req, res) => {
     const { nome, email, senha } = req.body;
-    let newUser = new User(nome, email, senha)
-    userBanco.insertUser(newUser)
-      .then(() =>{
-        res.json({
-          message:'Usuario inserido com sucesso',
-          error:false
-        })
+    let newUser = new User(nome, email, senha);
+    userBanco
+      .insertUser(newUser)
+      .then(() => {
+        res.status(201).json({
+          message: "Usuário inserido com sucesso",
+          error: false,
+        });
       })
-      .catch((err)=>{
-        console.log(err)
-        res.json({
-          message:'Erro inserido com sucesso',
-          error:true
-        })
-      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          message: "Erro inserido com sucesso",
+          error: true,
+        });
+      });
   });
 
   app.delete("/users/:email", (req, res) => {
@@ -66,7 +68,6 @@ module.exports = (app, db) => {
   });
 
   app.put("/users/:email", (req, res) => {
-
     const { nome, email, senha } = req.body;
     var varQnt = 0;
     if (nome || email || senha) {
