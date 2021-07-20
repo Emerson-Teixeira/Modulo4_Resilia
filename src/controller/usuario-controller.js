@@ -4,16 +4,32 @@ module.exports = (app, db) => {
   let userBanco = new UserDAO(db)
 
   app.get("/users", (req, res) => {
+<<<<<<< HEAD
       userBanco.getAllUsers()
       .then((rows) =>{
+=======
+    db.all("Select * from USUARIOS", (err,rows) =>{
+      if(err){
+        res.json({
+          message:"Error ao obter usuarios",
+          error:true
+        })
+      }
+      else{
+>>>>>>> 0539bcb0272707594926b0798df9a1fee529708b
         res.json({
           result:rows,
           count:rows.length
         })
+<<<<<<< HEAD
       })
       .catch((err)=>{
         res.json({err})
       })
+=======
+      }
+    })
+>>>>>>> 0539bcb0272707594926b0798df9a1fee529708b
   });
 
   app.get("/users/:email", (req, res) => {

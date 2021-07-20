@@ -2,9 +2,13 @@
 Esse arquivo deve ser executado apenas uma vez para que a o banco seja criado e populado
 */
 const sqlite3 = require('sqlite3').verbose();
+<<<<<<< HEAD
 const path = require('path');
 const caminhoArq = path.resolve(__dirname,'../','../','database.db')
 const db = new sqlite3.Database(caminhoArq);
+=======
+const db = new sqlite3.Database('./database.db');
+>>>>>>> 0539bcb0272707594926b0798df9a1fee529708b
 
 //==== Usuários
 const USUARIOS_SCHEMA = `
