@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 //Configs
 const app = express()
 const port = 3056
@@ -7,13 +8,12 @@ const port = 3056
 const rotasUsuarios = require('./controller/usuario-controller')
 const rotasTarefas = require('./controller/tarefa-controller')
 
-//Import Models n DB
-const User = require('./models/UserModel')
-const Task = require('./models/TaskModel')
+//Import DB
 const db = require('./infra/sqlite-db')
 
 //Middlewares
 app.use(express.json())
+app.use(cors())
 
 //Usando Rotas
 rotasUsuarios(app,db)

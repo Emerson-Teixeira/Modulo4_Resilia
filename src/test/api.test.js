@@ -19,4 +19,10 @@ describe('Testando rotas de usuário',()=>{
         .get('/users')
         expect(response.body).toHaveProperty('result')
     })
+
+    it('DELETE /users/someID ', async () =>{
+        const response = await request(app)
+        .get('/users/15')
+        expect(response).toBeTruthy()
+    })
 })

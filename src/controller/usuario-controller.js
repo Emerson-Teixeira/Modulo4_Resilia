@@ -3,104 +3,82 @@ const UserDAO = require("../DAO/UserDAO");
 module.exports = (app, db) => {
   let userBanco = new UserDAO(db);
 
-  app.get("/users", (req, res) => {
-    userBanco
-      .getAllUsers()
-      .then((rows) => {
-        res.json({
-          result: rows,
-          count: rows.length,
-        });
-      })
-      .catch((err) => {
-        res.json({ err });
-      });
+  app.get("/users", async (req, res) => {
+    try {
+      let resposta = await userBanco.getAllUsers();
+      res.json({ result: resposta });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   });
 
-  app.get("/users/:email", (req, res) => {
-    let arrayResposta = db.users.filter((element) => {
-      return element.email === req.params.email;
-    });
-    res.json({
-      result: arrayResposta,
-      count: arrayResposta.length,
-    });
+  app.get("/users/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+      if (parseInt(id)) {
+        let resposta = await userBanco.getUser(id);
+        if (resposta.length > 0) res.json({ result: resposta });
+        else {
+          throw new Error("Nenhum usuario encontrado");
+        }
+      } else {
+        throw new Error("é esperado um ID tipo INT, tente novamente");
+      }
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
   });
 
-  app.post("/users", (req, res) => {
+  app.post("/users", async (req, res) => {
     const { nome, email, senha } = req.body;
     let newUser = new User(nome, email, senha);
-    userBanco
-      .insertUser(newUser)
-      .then(() => {
-        res.status(201).json({
-          message: "Usuário inserido com sucesso",
-          error: false,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({
-          message: "Erro inserido com sucesso",
-          error: true,
-        });
-      });
-  });
-
-  app.delete("/users/:email", (req, res) => {
-    let countArray = db.users.length;
-
-    db.users = db.users.filter((element) => {
-      return element.email !== req.params.email;
-    });
-
-    if (countArray === db.users.length) {
-      res.json({
-        message: `não existe usuario com esse email ${req.params.email}`,
-        error: true,
-      });
-    } else {
-      res.json({
-        message: `Usuario com o email: ${req.params.email} deletado com sucesso`,
+    try {
+      await userBanco.insertUser(newUser);
+      res.status(201).json({
+        message: "Usuário inserido com sucesso",
         error: false,
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Erro ao inserir usuario",
+        serverLog: err.message,
+        error: true,
       });
     }
   });
 
-  app.put("/users/:email", (req, res) => {
-    const { nome, email, senha } = req.body;
-    var varQnt = 0;
-    if (nome || email || senha) {
-      db.users.forEach((element) => {
-        if (element.email === req.params.email) {
-          if (nome) {
-            element["nome"] = nome;
-          }
-          if (email) {
-            element["email"] = email;
-          }
-          if (senha) {
-            element["senha"] = senha;
-          }
-          varQnt++;
-        }
+  app.delete("/users/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+      await userBanco.deleteUser(id);
+      res.status(200).json({
+        message: "Usuário deletado com sucesso",
+        error: false,
       });
-      if (!varQnt) {
-        res.json({
-          message: "Não existe nenhum usuario com esse email",
-          error: true,
-        });
-      } else {
-        res.json({
-          message: `Usuarios com email ${req.params.email} alterado`,
-          error: false,
-          count: varQnt,
-        });
-      }
-    } else {
-      res.json({
-        message:
-          "Não foi possivel atualizar o usuario, nenhum campo valido foi passado ( Esperado {nome,email,senha} )",
+    } catch (err) {
+      res.status(500).json({
+        message: "Erro ao deletar usuario",
+        serverLog: err.message,
+        error: true,
+      });
+    }
+  });
+
+  app.put("/users/:id", async (req, res) => {
+    const { nome, email, senha } = req.body;
+
+    const { id } = req.params;
+
+    try {
+      await userBanco.updateUser(id, nome, email, senha);
+      res.status(200).json({
+        message: "Usuário atualizado com sucesso",
+        error: false,
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Erro ao atualizar o  usuário",
+        serverLog: err.message,
         error: true,
       });
     }
