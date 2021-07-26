@@ -17,7 +17,7 @@ module.exports = (app, db) => {
     try {
       if (parseInt(id)) {
         let resposta = await userBanco.getUser(id);
-        if (resposta.length > 0) res.json({ result: resposta });
+        if (resposta) res.json(resposta);
         else {
           throw new Error("Nenhum usuario encontrado");
         }
