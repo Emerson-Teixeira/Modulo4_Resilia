@@ -2,7 +2,6 @@ const express = require('express')
 const cors = require('cors')
 //Configs
 const app = express()
-const port = 3056
 
 //Import Router
 const rotasUsuarios = require('./controller/usuario-controller')
